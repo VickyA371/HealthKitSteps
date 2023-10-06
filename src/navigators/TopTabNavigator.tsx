@@ -19,9 +19,13 @@ const Tab = createMaterialTopTabNavigator<TopTabNavigatorScreensType>();
  */
 const TopTabNavigator = () => {
   return (
-    <Tab.Navigator tabBar={CustomTabBar}>
+    <Tab.Navigator
+      tabBar={CustomTabBar}
+      screenOptions={{
+        lazy: true,
+      }}>
       <Tab.Screen
-        name="daily"
+        name={StepsCountDurationType.DAILY}
         component={StepsCount}
         options={{
           title: 'D',
@@ -31,7 +35,7 @@ const TopTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="weekly"
+        name={StepsCountDurationType.WEEKLY}
         component={StepsCount}
         options={{
           title: 'W',
@@ -41,7 +45,7 @@ const TopTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="monthly"
+        name={StepsCountDurationType.MONTHLY}
         component={StepsCount}
         options={{
           title: 'M',
@@ -51,7 +55,7 @@ const TopTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="sixMonths"
+        name={StepsCountDurationType.SIX_MONTHS}
         component={StepsCount}
         options={{
           title: '6M',
@@ -61,7 +65,7 @@ const TopTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="yearly"
+        name={StepsCountDurationType.YEARLY}
         component={StepsCount}
         options={{
           title: 'Y',

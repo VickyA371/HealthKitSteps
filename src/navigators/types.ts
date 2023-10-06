@@ -1,6 +1,5 @@
 export type MainStackScreensType = {
   home: undefined;
-  permission: undefined;
 };
 
 export enum StepsCountDurationType {

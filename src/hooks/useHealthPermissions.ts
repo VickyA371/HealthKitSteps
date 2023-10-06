@@ -1,6 +1,7 @@
 import {useLayoutEffect, useState} from 'react';
 import AppleHealthKit, {
   HealthKitPermissions,
+  HealthStatusResult,
   HealthValue,
 } from 'react-native-health';
 
@@ -17,18 +18,61 @@ const useHealthPermissions = () => {
   const [isLoading, setLoading] = useState(true);
 
   useLayoutEffect(() => {
-    AppleHealthKit.initHealthKit(
-      permissions,
-      (err: string, results: HealthValue) => {
-        setLoading(false);
-        if (err) {
-          console.log(
-            '[AppleHealthKit.initHealthKit - useHealthPermissions] Error : ',
-            err,
-          );
-          setError(err);
+    AppleHealthKit.isAvailable(
+      (availableError: Object, isAvailable: boolean) => {
+        if (availableError) {
+          setError(availableError?.toLocaleString() ?? 'Something went wrong');
+          setLoading(false);
         } else {
-          setPermissionGranted(!!results);
+          if (isAvailable) {
+            AppleHealthKit.initHealthKit(
+              permissions,
+              (err: string, initRes: HealthValue) => {
+                if (err) {
+                  console.log(
+                    '[AppleHealthKit.initHealthKit - useHealthPermissions] Error : ',
+                    err,
+                  );
+                  setLoading(false);
+                  setError(err);
+                } else {
+                  if (initRes) {
+                    AppleHealthKit.getAuthStatus(
+                      {
+                        permissions: permissions.permissions,
+                      },
+                      (getAuthError: string, results: HealthStatusResult) => {
+                        if (err) {
+                          setLoading(false);
+                          setError(getAuthError);
+                        } else {
+                          const readPermissions =
+                            results?.permissions?.read?.every?.(
+                              (permissionRes: number) => permissionRes === 2,
+                            );
+
+                          const writePermissions =
+                            results?.permissions?.write?.every?.(
+                              (permissionRes: number) => permissionRes === 2,
+                            );
+                          setLoading(false);
+                          setPermissionGranted(
+                            !!readPermissions && !!writePermissions,
+                          );
+                        }
+                      },
+                    );
+                  } else {
+                    setLoading(false);
+                    setPermissionGranted(false);
+                  }
+                }
+              },
+            );
+          } else {
+            setLoading(false);
+            setPermissionGranted(false);
+          }
         }
       },
     );

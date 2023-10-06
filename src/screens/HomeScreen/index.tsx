@@ -1,13 +1,16 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Button, Linking, Text, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
+// navigators
+import TopTabNavigator from '../../navigators/TopTabNavigator';
+
+// hooks
 import useHealthPermissions from '../../hooks/useHealthPermissions';
 
 import {MainStackScreensType} from '../../navigators/types';
 import baseStyles from '../../constants/baseStyles';
 import colors from '../../assets/colors';
-import TopTabNavigator from '../../navigators/TopTabNavigator';
 
 const HomeScreen = (
   _props: NativeStackScreenProps<MainStackScreensType, 'home'>,
@@ -20,10 +23,19 @@ const HomeScreen = (
     </View>;
   }
 
-  if (isLoading || !permissionGranted) {
+  if (isLoading) {
     return (
       <View style={baseStyles.flexCenter}>
         <ActivityIndicator size={'large'} color={colors.black} />
+      </View>
+    );
+  }
+
+  if (!permissionGranted) {
+    return (
+      <View style={baseStyles.flexCenter}>
+        <Text>{'HealthKit Permission required!'}</Text>
+        <Button title="Open Settings" onPress={Linking.openSettings} />
       </View>
     );
   }
@@ -34,7 +46,5 @@ const HomeScreen = (
     </View>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default HomeScreen;
