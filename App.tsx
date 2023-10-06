@@ -10,11 +10,14 @@ import {StyleSheet} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 import MainNavigator from './src/navigators/MainNavigator';
+import ManageCustom from './src/context/ManageCustom';
 
 function App(): JSX.Element {
   return (
     <SafeAreaProvider style={styles.safeAreaContainer}>
-      <MainNavigator />
+      <ManageCustom>
+        <MainNavigator />
+      </ManageCustom>
     </SafeAreaProvider>
   );
 }

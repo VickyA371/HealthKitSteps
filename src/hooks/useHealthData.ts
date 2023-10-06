@@ -7,7 +7,10 @@ import moment from 'moment';
 
 import {StepsCountDurationType} from '../navigators/types';
 
-const useHealthKitData = (type: StepsCountDurationType) => {
+const useHealthKitData = (
+  type: StepsCountDurationType,
+  considerCustomAddedSteps = true,
+) => {
   const [data, setData] = useState<HealthValue[]>([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -43,6 +46,8 @@ const useHealthKitData = (type: StepsCountDurationType) => {
         options.endDate = moment().toISOString();
     }
 
+    options.includeManuallyAdded = considerCustomAddedSteps;
+
     AppleHealthKit.getDailyStepCountSamples(
       options,
       (err: string, results: HealthValue[]) => {
@@ -56,7 +61,7 @@ const useHealthKitData = (type: StepsCountDurationType) => {
         }
       },
     );
-  }, []);
+  }, [considerCustomAddedSteps, type]);
 
   return {
     data,
