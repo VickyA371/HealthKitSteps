@@ -9,7 +9,7 @@ import {StepsCountDurationType} from '../navigators/types';
 
 const useHealthKitData = (
   type: StepsCountDurationType,
-  considerCustomAddedSteps = true,
+  considerCustomAddedSteps = false,
 ) => {
   const [data, setData] = useState<HealthValue[]>([]);
   const [isLoading, setLoading] = useState(true);

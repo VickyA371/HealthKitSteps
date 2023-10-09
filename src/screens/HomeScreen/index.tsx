@@ -54,7 +54,7 @@ const HomeScreen = (
 
   return (
     <View style={[baseStyles.flexWhite, {paddingTop: 16}]}>
-      <View style={styles.headerContainer}>
+      {/* <View style={styles.headerContainer}>
         <Text style={styles.text}>{'Include custom added steps'}</Text>
         <Switch
           value={manageCustomHooks.considerCustomAdded}
@@ -62,7 +62,7 @@ const HomeScreen = (
             manageCustomHooks.setConsiderCustomAdded(e.nativeEvent.value);
           }}
         />
-      </View>
+      </View> */}
       <TopTabNavigator />
     </View>
   );
